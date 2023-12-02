@@ -118,7 +118,6 @@ while True:
         elif brick.y / 25 <= 8:
             pygame.draw.rect(screen, YELLOW, brick)
 
-
     pygame.display.flip()
     clock.tick(60)
 
