@@ -9,6 +9,7 @@ WIDTH, HEIGHT = 800, 600
 BALL_RADIUS = 10
 PADDLE_WIDTH, PADDLE_HEIGHT = 100, 10
 BRICK_WIDTH, BRICK_HEIGHT = 80, 20
+GAP_X, GAP_Y = 2,2
 BlACK = (0, 0, 0)
 WHITE = (255, 255, 255)
 BLUE = (0, 0, 255)
@@ -29,7 +30,9 @@ paddle = pygame.Rect(WIDTH // 2 - PADDLE_WIDTH // 2, HEIGHT - PADDLE_HEIGHT - 10
 bricks = []
 for row in range(5):
     for col in range(WIDTH // BRICK_WIDTH):
-        brick = pygame.Rect(col * BRICK_WIDTH, row * BRICK_HEIGHT, BRICK_WIDTH, BRICK_HEIGHT)
+        brick_x = col * BRICK_WIDTH
+        brick_y = row * BRICK_HEIGHT
+        brick = pygame.Rect(brick_x, brick_y, BRICK_WIDTH - 2, BRICK_HEIGHT - 2)
         bricks.append(brick)
 
 clock = pygame.time.Clock()
