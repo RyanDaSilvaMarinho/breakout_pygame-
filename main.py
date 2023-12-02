@@ -7,13 +7,18 @@ pygame.init()
 # Configurações do jogo
 WIDTH, HEIGHT = 800, 600
 BALL_RADIUS = 10
+wall_width = 16
 PADDLE_WIDTH, PADDLE_HEIGHT = 100, 10
 BRICK_WIDTH, BRICK_HEIGHT = 80, 20
-GAP_X, GAP_Y = 2,2
-BlACK = (0, 0, 0)
+GAP_X, GAP_Y = 2, 2
 WHITE = (255, 255, 255)
-BLUE = (0, 0, 255)
-RED = (255, 0, 0)
+BLACK = (0, 0, 0)
+GREY = (212, 218, 212)
+BLUE = (0, 97, 148)
+RED = (162, 8, 0)
+ORANGE = (183, 119, 0)
+GREEN = (0, 127, 33)
+YELLOW = (197, 199, 37)
 
 # Inicialização da janela
 screen = pygame.display.set_mode((WIDTH, HEIGHT))
@@ -73,12 +78,19 @@ while True:
         sys.exit()
 
     # Desenhar na tela
-    screen.fill(BlACK)
+    screen.fill(BLACK)
     pygame.draw.ellipse(screen, BLUE, ball)
     pygame.draw.rect(screen, WHITE, paddle)
+
+    pygame.draw.line(screen, GREY, [0, 9], [WIDTH, 9], 20)
+    pygame.draw.line(screen, GREY, [(wall_width / 2) - 1, 0], [(wall_width / 2) - 1, HEIGHT], wall_width)
+    pygame.draw.line(screen, GREY, [(WIDTH - wall_width / 2) - 1, 0], [(WIDTH - wall_width / 2) - 1, HEIGHT], 20)
+
+    pygame.draw.line(screen, BLUE, [0, 585], [wall_width - 1, 585], wall_width - 5)
+    pygame.draw.line(screen, BLUE, [WIDTH, 585], [WIDTH - 18, 585], wall_width - 5)
+
     for brick in bricks:
         pygame.draw.rect(screen, RED, brick)
 
     pygame.display.flip()
     clock.tick(60)
-
