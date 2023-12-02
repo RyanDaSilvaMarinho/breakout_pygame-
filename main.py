@@ -9,7 +9,7 @@ WIDTH, HEIGHT = 800, 600
 BALL_RADIUS = 10
 wall_width = 16
 PADDLE_WIDTH, PADDLE_HEIGHT = 100, 10
-BRICK_WIDTH, BRICK_HEIGHT = 80, 20
+BRICK_WIDTH, BRICK_HEIGHT = 75, 20
 GAP_X, GAP_Y = 2, 2
 WHITE = (255, 255, 255)
 BLACK = (0, 0, 0)
@@ -39,8 +39,8 @@ paddle = pygame.Rect(WIDTH // 2 - PADDLE_WIDTH // 2, HEIGHT - PADDLE_HEIGHT - 10
 bricks = []
 for row in range(5):
     for col in range(WIDTH // BRICK_WIDTH):
-        brick_x = col * BRICK_WIDTH
-        brick_y = row * BRICK_HEIGHT
+        brick_x = col * BRICK_WIDTH + 25
+        brick_y = row * BRICK_HEIGHT + 40
         brick = pygame.Rect(brick_x, brick_y, BRICK_WIDTH - 2, BRICK_HEIGHT - 2)
         bricks.append(brick)
 
