@@ -44,6 +44,18 @@ for row in range(5):
         brick = pygame.Rect(brick_x, brick_y, BRICK_WIDTH - 2, BRICK_HEIGHT - 2)
         bricks.append(brick)
 
+     # Definir cores com base na linha de tijolos
+        if row < 2:
+            brick_color = RED
+        elif 2 <= row < 4:
+            brick_color = ORANGE
+        elif 4 <= row < 6:
+            brick_color = GREEN
+        else:
+            brick_color = YELLOW
+
+        bricks.append(brick)
+        
 clock = pygame.time.Clock()
 
 # Loop principal do jogo
