@@ -20,6 +20,10 @@ ORANGE = (183, 119, 0)
 GREEN = (0, 127, 33)
 YELLOW = (197, 199, 37)
 
+# Efeitos sonoros
+bounce_sound = pygame.mixer.Sound('assets/bounce.wav')
+scoring_sound = pygame.mixer.Sound('assets/258020__kodack__arcade-bleep-sound.wav')
+
 # Inicialização da janela
 screen = pygame.display.set_mode((WIDTH, HEIGHT))
 pygame.display.set_caption("Breakout Game")
@@ -59,18 +63,21 @@ while True:
     # Colisão da bola com as paredes
     if ball.left <= 0 or ball.right >= WIDTH:
         ball_speed[0] = -ball_speed[0]
+        bounce_sound.play()
     if ball.top <= 0:
         ball_speed[1] = -ball_speed[1]
+        bounce_sound.play()
 
     # Colisão da bola com a raquete
     if ball.colliderect(paddle) and ball_speed[1] > 0:
         ball_speed[1] = -ball_speed[1]
-
+        bounce_sound.play()
     # Colisão da bola com os tijolos
     brick_hit = ball.collidelist(bricks)
     if brick_hit != -1:
         del bricks[brick_hit]
         ball_speed[1] = -ball_speed[1]
+        scoring_sound.play()
 
     # Verificar se o jogador perdeu
     if ball.bottom >= HEIGHT:
