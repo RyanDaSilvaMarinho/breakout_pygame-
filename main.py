@@ -37,7 +37,7 @@ paddle = pygame.Rect(WIDTH // 2 - PADDLE_WIDTH // 2, HEIGHT - PADDLE_HEIGHT - 10
 
 # Inicialização dos tijolos
 bricks = []
-for row in range(5):
+for row in range(8):
     for col in range(WIDTH // BRICK_WIDTH):
         brick_x = col * BRICK_WIDTH + 25
         brick_y = row * BRICK_HEIGHT + 40
