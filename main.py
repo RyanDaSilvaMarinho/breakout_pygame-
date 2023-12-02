@@ -97,7 +97,14 @@ while True:
     pygame.draw.line(screen, BLUE, [WIDTH, 585], [WIDTH - 18, 585], wall_width - 5)
 
     for brick in bricks:
-        pygame.draw.rect(screen, RED, brick)
+        if brick.y / 25 <= 3:
+            pygame.draw.rect(screen, RED, brick)
+        elif brick.y / 25 <= 4:
+            pygame.draw.rect(screen, ORANGE, brick)
+        elif brick.y / 25 <= 6:
+            pygame.draw.rect(screen, GREEN, brick)
+        elif brick.y / 25 <= 8:
+            pygame.draw.rect(screen, YELLOW, brick)
 
     pygame.display.flip()
     clock.tick(60)
