@@ -93,7 +93,20 @@ while chances > 0:
             score += 3  # Verde
         else:
             score += 1  # Amarelo
-            
+    
+    # Verificar se o jogador ganhou
+    if not bricks:
+        # O jogador venceu
+        screen.fill((0, 0, 0))
+        you_win_font = pygame.font.Font('assets/PressStart2P.ttf', 40)
+        you_win_text = you_win_font.render('You Win!', True, WHITE)
+        you_win_rect = you_win_text.get_rect(center=(WIDTH // 2, HEIGHT // 2))
+        screen.blit(you_win_text, you_win_rect)
+        pygame.display.flip()
+        pygame.time.delay(2000)
+        pygame.quit()
+        sys.exit()
+        
     # Verificar se o jogador perdeu
     if ball.bottom >= HEIGHT:
         chances -= 1
@@ -152,6 +165,17 @@ while chances > 0:
     chances_text = chances_font.render(f'Chances: {chances}', True, WHITE)
     chances_text_rect = chances_text.get_rect()
     screen.blit(chances_text, (550, 30))
+
+    if chances == 0:
+        screen.fill((0, 0, 0))
+        game_over_font = pygame.font.Font('assets/PressStart2P.ttf', 50)
+        game_over_text = game_over_font.render('Game Over', True, WHITE)
+        game_over_text_rect = game_over_text.get_rect(center=(WIDTH // 2, HEIGHT // 2))
+        screen.blit(game_over_text, game_over_text_rect)
+        pygame.display.flip()
+        pygame.time.delay(2000)
+        pygame.quit()
+        sys.exit()
 
     pygame.display.flip()
     clock.tick(60)
