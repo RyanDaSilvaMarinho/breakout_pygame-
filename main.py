@@ -12,6 +12,7 @@ PADDLE_WIDTH, PADDLE_HEIGHT = 100, 10
 BRICK_WIDTH, BRICK_HEIGHT = 75, 20
 GAP_X, GAP_Y = 2, 2
 score = 0
+chances = 4
 WHITE = (255, 255, 255)
 BLACK = (0, 0, 0)
 GREY = (212, 218, 212)
@@ -20,7 +21,6 @@ RED = (162, 8, 0)
 ORANGE = (183, 119, 0)
 GREEN = (0, 127, 33)
 YELLOW = (197, 199, 37)
-
 
 # Efeitos sonoros
 bounce_sound = pygame.mixer.Sound('assets/bounce.wav')
@@ -46,20 +46,10 @@ for row in range(8):
         brick = pygame.Rect(brick_x, brick_y, BRICK_WIDTH - 2, BRICK_HEIGHT - 2)
         bricks.append(brick)
 
-# Definir cores com base na linha de tijolos
-        if row < 2:
-            brick_color = RED
-        elif 2 <= row < 4:
-            brick_color = ORANGE
-        elif 4 <= row < 6:
-            brick_color = GREEN
-        else:
-            brick_color = YELLOW
-
 clock = pygame.time.Clock()
 
 # Loop principal do jogo
-while True:
+while chances > 0:
     for event in pygame.event.get():
         if event.type == pygame.QUIT:
             pygame.quit()
@@ -87,23 +77,35 @@ while True:
     # Colisão da bola com os tijolos
     brick_hit = ball.collidelist(bricks)
     if brick_hit != -1:
+        brick_y = bricks[brick_hit].y
+        row = (brick_y - 60) // BRICK_HEIGHT
         del bricks[brick_hit]
         ball_speed[1] = -ball_speed[1]
         scoring_sound.play()
 
         # Checagem de qual quadradinho foi acertado e a pontuação
-        if 6 < row <= 8:
-            score += 1
-        elif 4 < row <= 6:
-            score += 3
-        elif 2 < row <= 4:
-            score += 5
-        elif row < 2:
-            score += 7
+        if row < 2:
+            score += 7  # Vermelho
+        elif 2 <= row < 4:
+            score += 5  # Laranja
+        elif 4 <= row < 6:
+            score += 3  # Verde
+        else:
+            score += 1  # Amarelo
+
     # Verificar se o jogador perdeu
     if ball.bottom >= HEIGHT:
-        pygame.quit()
-        sys.exit()
+        chances -= 1
+
+        ball.center = (WIDTH // 2, HEIGHT // 2)
+        paddle.center = (WIDTH // 2, HEIGHT - 20)
+
+        # Aguarde um curto período antes de continuar
+        pygame.time.delay(500)
+
+    screen.fill((0, 0, 0))  # Preencha a tela com a cor de fundo
+    pygame.draw.rect(screen, (255, 255, 255), paddle)  # Desenhe a plataforma
+    pygame.draw.ellipse(screen, (255, 255, 255), ball)
 
     # Desenhar na tela
     screen.fill(BLACK)
@@ -116,6 +118,18 @@ while True:
 
     pygame.draw.line(screen, BLUE, [0, 585], [wall_width - 1, 585], wall_width - 5)
     pygame.draw.line(screen, BLUE, [WIDTH, 585], [WIDTH - 18, 585], wall_width - 5)
+
+    pygame.draw.line(screen, RED, [0, 78], [wall_width - 1, 78], 40)
+    pygame.draw.line(screen, RED, [WIDTH, 78], [WIDTH - 18, 78], 40)
+
+    pygame.draw.line(screen, ORANGE, [0, 118], [wall_width - 1, 118], 40)
+    pygame.draw.line(screen, ORANGE, [WIDTH, 118], [WIDTH - 18, 118], 40)
+
+    pygame.draw.line(screen, GREEN, [0, 158], [wall_width - 1, 158], 40)
+    pygame.draw.line(screen, GREEN, [WIDTH, 158], [WIDTH - 18, 158], 40)
+
+    pygame.draw.line(screen, YELLOW, [0, 198], [wall_width - 1, 198], 40)
+    pygame.draw.line(screen, YELLOW, [WIDTH, 198], [WIDTH - 18, 198], 40)
 
     for brick in bricks:
         if brick.y / 25 <= 3.5:
@@ -132,6 +146,11 @@ while True:
     score_text = score_font.render(f'Score: {score}', True, WHITE)
     score_text_rect = score_text.get_rect()
     screen.blit(score_text, (65, 30))
+
+    chances_font = pygame.font.Font('assets/PressStart2P.ttf', 20)
+    chances_text = chances_font.render(f'Chances: {chances}', True, WHITE)
+    chances_text_rect = chances_text.get_rect()
+    screen.blit(chances_text, (550, 30))
 
     pygame.display.flip()
     clock.tick(60)
