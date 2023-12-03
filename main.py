@@ -46,16 +46,6 @@ for row in range(8):
         brick = pygame.Rect(brick_x, brick_y, BRICK_WIDTH - 2, BRICK_HEIGHT - 2)
         bricks.append(brick)
 
-# Definir cores com base na linha de tijolos
-        if row < 2:
-            brick_color = RED
-        elif 2 <= row < 4:
-            brick_color = ORANGE
-        elif 4 <= row < 6:
-            brick_color = GREEN
-        else:
-            brick_color = YELLOW
-
 clock = pygame.time.Clock()
 
 # Loop principal do jogo
@@ -87,19 +77,22 @@ while True:
     # Colisão da bola com os tijolos
     brick_hit = ball.collidelist(bricks)
     if brick_hit != -1:
+        brick_y = bricks[brick_hit].y
+        row = (brick_y - 60) // BRICK_HEIGHT
         del bricks[brick_hit]
         ball_speed[1] = -ball_speed[1]
         scoring_sound.play()
 
         # Checagem de qual quadradinho foi acertado e a pontuação
-        if 6 < row <= 8:
-            score += 1
-        elif 4 < row <= 6:
-            score += 3
-        elif 2 < row <= 4:
-            score += 5
-        elif row < 2:
-            score += 7
+        if row < 2:
+            score += 7  # Vermelho
+        elif 2 <= row < 4:
+            score += 5  # Laranja
+        elif 4 <= row < 6:
+            score += 3  # Verde
+        else:
+            score += 1  # Amarelo
+            
     # Verificar se o jogador perdeu
     if ball.bottom >= HEIGHT:
         pygame.quit()
