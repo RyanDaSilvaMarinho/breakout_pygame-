@@ -11,6 +11,7 @@ wall_width = 16
 PADDLE_WIDTH, PADDLE_HEIGHT = 100, 10
 BRICK_WIDTH, BRICK_HEIGHT = 75, 20
 GAP_X, GAP_Y = 2, 2
+score = 0
 WHITE = (255, 255, 255)
 BLACK = (0, 0, 0)
 GREY = (212, 218, 212)
@@ -19,6 +20,7 @@ RED = (162, 8, 0)
 ORANGE = (183, 119, 0)
 GREEN = (0, 127, 33)
 YELLOW = (197, 199, 37)
+
 
 # Efeitos sonoros
 bounce_sound = pygame.mixer.Sound('assets/bounce.wav')
@@ -40,11 +42,11 @@ bricks = []
 for row in range(8):
     for col in range(WIDTH // BRICK_WIDTH):
         brick_x = col * BRICK_WIDTH + 25
-        brick_y = row * BRICK_HEIGHT + 40
+        brick_y = row * BRICK_HEIGHT + 60
         brick = pygame.Rect(brick_x, brick_y, BRICK_WIDTH - 2, BRICK_HEIGHT - 2)
         bricks.append(brick)
 
-     # Definir cores com base na linha de tijolos
+# Definir cores com base na linha de tijolos
         if row < 2:
             brick_color = RED
         elif 2 <= row < 4:
@@ -54,8 +56,6 @@ for row in range(8):
         else:
             brick_color = YELLOW
 
-        bricks.append(brick)
-        
 clock = pygame.time.Clock()
 
 # Loop principal do jogo
@@ -91,6 +91,15 @@ while True:
         ball_speed[1] = -ball_speed[1]
         scoring_sound.play()
 
+        # Checagem de qual quadradinho foi acertado e a pontuação
+        if 6 < row <= 8:
+            score += 1
+        elif 4 < row <= 6:
+            score += 3
+        elif 2 < row <= 4:
+            score += 5
+        elif row < 2:
+            score += 7
     # Verificar se o jogador perdeu
     if ball.bottom >= HEIGHT:
         pygame.quit()
@@ -109,14 +118,20 @@ while True:
     pygame.draw.line(screen, BLUE, [WIDTH, 585], [WIDTH - 18, 585], wall_width - 5)
 
     for brick in bricks:
-        if brick.y / 25 <= 3:
+        if brick.y / 25 <= 3.5:
             pygame.draw.rect(screen, RED, brick)
-        elif brick.y / 25 <= 4:
+        elif brick.y / 25 <= 5.5:
             pygame.draw.rect(screen, ORANGE, brick)
-        elif brick.y / 25 <= 6:
+        elif brick.y / 25 <= 6.5:
             pygame.draw.rect(screen, GREEN, brick)
         elif brick.y / 25 <= 8:
             pygame.draw.rect(screen, YELLOW, brick)
+
+    # TODO: Desenhar a pontuação na tela
+    score_font = pygame.font.Font('assets/PressStart2P.ttf', 20)
+    score_text = score_font.render(f'Score: {score}', True, WHITE)
+    score_text_rect = score_text.get_rect()
+    screen.blit(score_text, (65, 30))
 
     pygame.display.flip()
     clock.tick(60)
