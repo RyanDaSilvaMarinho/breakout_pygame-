@@ -12,7 +12,7 @@ PADDLE_WIDTH, PADDLE_HEIGHT = 100, 10
 BRICK_WIDTH, BRICK_HEIGHT = 75, 20
 GAP_X, GAP_Y = 2, 2
 score = 0
-chances = 4
+chance = 4
 WHITE = (255, 255, 255)
 BLACK = (0, 0, 0)
 GREY = (212, 218, 212)
@@ -50,7 +50,7 @@ for row in range(8):
 clock = pygame.time.Clock()
 
 # Loop principal do jogo
-while chances > 0:
+while chance > 0:
     for event in pygame.event.get():
         if event.type == pygame.QUIT:
             pygame.quit()
@@ -93,10 +93,23 @@ while chances > 0:
             score += 3  # Verde
         else:
             score += 1  # Amarelo
-            
+    
+    # Verificar se o jogador ganhou
+    if not bricks:
+        # O jogador venceu
+        screen.fill((0, 0, 0))
+        you_win_font = pygame.font.Font('assets/PressStart2P.ttf', 40)
+        you_win_text = you_win_font.render('You Win!', True, WHITE)
+        you_win_rect = you_win_text.get_rect(center=(WIDTH // 2, HEIGHT // 2))
+        screen.blit(you_win_text, you_win_rect)
+        pygame.display.flip()
+        pygame.time.delay(2000)
+        pygame.quit()
+        sys.exit()
+        
     # Verificar se o jogador perdeu
     if ball.bottom >= HEIGHT:
-        chances -= 1
+        chance -= 1
 
         ball.center = (WIDTH // 2, HEIGHT // 2)
         paddle.center = (WIDTH // 2, HEIGHT - 20)
@@ -110,7 +123,7 @@ while chances > 0:
 
     # Desenhar na tela
     screen.fill(BLACK)
-    pygame.draw.ellipse(screen, BLUE, ball)
+    pygame.draw.rect(screen, BLUE, ball)
     pygame.draw.rect(screen, WHITE, paddle)
 
     pygame.draw.line(screen, GREY, [0, 9], [WIDTH, 9], 20)
@@ -144,14 +157,25 @@ while chances > 0:
 
     # TODO: Desenhar a pontuação na tela
     score_font = pygame.font.Font('assets/PressStart2P.ttf', 20)
-    score_text = score_font.render(f'Score: {score}', True, WHITE)
+    score_text = score_font.render(f' {score}', True, WHITE)
     score_text_rect = score_text.get_rect()
     screen.blit(score_text, (65, 30))
 
-    chances_font = pygame.font.Font('assets/PressStart2P.ttf', 20)
-    chances_text = chances_font.render(f'Chances: {chances}', True, WHITE)
-    chances_text_rect = chances_text.get_rect()
-    screen.blit(chances_text, (550, 30))
+    chance_font = pygame.font.Font('assets/PressStart2P.ttf', 20)
+    chance_text = chances_font.render(f' {chance}', True, WHITE)
+    chance_text_rect = chance_text.get_rect()
+    screen.blit(chance_text, (550, 30))
+
+    if chances == 0:
+        screen.fill((0, 0, 0))
+        game_over_font = pygame.font.Font('assets/PressStart2P.ttf', 50)
+        game_over_text = game_over_font.render('Game Over', True, WHITE)
+        game_over_text_rect = game_over_text.get_rect(center=(WIDTH // 2, HEIGHT // 2))
+        screen.blit(game_over_text, game_over_text_rect)
+        pygame.display.flip()
+        pygame.time.delay(2000)
+        pygame.quit()
+        sys.exit()
 
     pygame.display.flip()
     clock.tick(60)
